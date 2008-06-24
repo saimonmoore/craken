@@ -1,13 +1,46 @@
 Craken
 ======
 
-Introduction goes here.
+Craken is a rails plugin for managing and installing rake-centric crontab files 
+over Capistrano.
 
+What is a crontab?  A command list that cron will run at specified intervals.
+What is cron?  A daemon to execute scheduled commands.
+
+If you don't know these things already you should probably do a little research
+before using this tool :)
+
+Craken uses files called raketabs that are similar in every respect to crontab
+files except the commands are rake tasks instead of arbitrary commands.
+
+Why not just let it run arbitrary commands instead of limiting it to rake tasks?
+The main issue this plugin attempts to alleviate is having to manage the 
+rails environment configuration for multiple deployments.  Craken will set up the
+crontab to change into the application's current directory and set rake to run in
+the correct environment.
 
 Example
 =======
 
-Example goes here.
+An example line from an example raketab file:
+
+59 * * * * thing:to_do > /tmp/thing_to_do.log 2>&1
+
+This will run the rake task thing:to_do every 59th minute after every hour.
+The little redirect thing is added for effect.  Otherwise output will be mailed
+to the user who the crontab is installed on.
+
+When craken:install is run on the production box, the crontab will look like this:
+
+### foo raketab
+59 * * * * cd /home/thatguy/u/apps/foo/current && /usr/bin/rake --silent RAILS_ENV=production thing:to_do > /tmp/thing_to_do.log 2>&1
+### foo raketab end
 
 
-Copyright (c) 2008 [name of plugin creator], released under the MIT license
+The "magic" part is this bit that crontab added:
+  cd /home/thatguy/u/apps/foo/current && /usr/bin/rake --silent RAILS_ENV=production
+
+
+
+Doug McInnes <doug.mcinnes@latimes.com>
+Copyright (c) 2008 Los Angeles Times, released under the MIT license
