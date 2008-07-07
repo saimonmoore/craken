@@ -18,7 +18,7 @@ namespace :craken do
       RAKETAB_FILE    = "#{DEPLOY_PATH}/config/raketab"
     end
     CRONTAB_EXE       = ENV['crontab_exe'] || "/usr/bin/crontab"
-    RAKE_EXE          = ENV['rake_exe'] || (rake = `which rake`.strip and rake.empty?) ? "/opt/csw/bin/rake" : rake
+    RAKE_EXE          = ENV['rake_exe'] || (rake = `which rake`.strip and rake.empty?) ? "/usr/bin/rake" : rake
     RAKETAB_RAILS_ENV = ENV['raketab_rails_env'] || RAILS_ENV
     # assumes root of app is name of app, also takes into account 
     # capistrano deployments
