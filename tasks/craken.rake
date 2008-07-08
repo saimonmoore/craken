@@ -29,7 +29,7 @@ namespace :craken do
   task :install => "craken:setup" do
     require 'erb'
     if File.exists? RAKETAB_FILE
-      puts "INFO: Using #{RAKETAB_FILE}"
+      puts "craken:install => Using raketab file #{RAKETAB_FILE}"
       #raketab = File.read RAKETAB_FILE
       raketab = ERB.new(File.read(RAKETAB_FILE)).result(binding)
       crontab = load_and_strip
