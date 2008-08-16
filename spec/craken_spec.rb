@@ -79,15 +79,17 @@ EOS
       cron.should match(/1,2,3,4,5,6 0 7,8 4 5 [^\d]/)
     end
 
-    it "should add a cd command" do
+    it "should add a cd command, rake command and environment variables" do
       raketab = "0 1 0 0 0 foo:bar"
       cron = append_tasks(@crontab, raketab)
-      cron.should match(/0 1 0 0 0 cd /)
+      cron.should match(/0 1 0 0 0 cd #{Craken::DEPLOY_PATH} && #{Craken::RAKE_EXE} --silent RAILS_ENV=#{Craken::RAKETAB_RAILS_ENV} foo:bar/)
     end
 
-    it "should add the rake command"
-    it "should add the rails environment value"
-    it "should ignore additional data at the end of the configuration"
+    it "should ignore additional data at the end of the configuration" do
+      raketab = "0 1 0 0 0 foo:bar >> /tmp/foobar.log 2>&1"
+      cron = append_tasks(@crontab, raketab)
+      cron.should match(/0 1 0 0 0 cd #{Craken::DEPLOY_PATH} && #{Craken::RAKE_EXE} --silent RAILS_ENV=#{Craken::RAKETAB_RAILS_ENV} foo:bar >> \/tmp\/foobar.log 2>&1/)
+    end
   end
 
   describe "install" do
