@@ -93,9 +93,15 @@ EOS
   end
 
   describe "install" do
-    it "should create a temporary file for crontab"
-    it "should run crontab"
-    it "should delete the temporary file"
+    it "should install crontab by creating a temporary file, running crontab, then deleting the temp file" do
+      crontab = "crontab"
+      file_handle = mock("file handle")
+      file_handle.should_receive(:write).with(crontab)
+      File.should_receive(:open).with(/.crontab[0-9]*/, 'w').and_yield(file_handle)
+      self.should_receive(:`).with(/crontab .crontab[0-9]*$/)
+      FileUtils.should_receive(:rm).with(/.crontab[0-9]*/)
+      install(crontab)
+    end
   end
 
 end
