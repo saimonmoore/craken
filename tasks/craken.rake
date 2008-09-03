@@ -1,3 +1,5 @@
+require "#{File.dirname(__FILE__)}/../lib/craken"
+
 namespace :craken do
 
   desc "Install raketab script"
